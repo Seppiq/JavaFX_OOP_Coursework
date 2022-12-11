@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.*?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0"
+            prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.demodemonoch.HelloController">
+    <top>
+        <AnchorPane prefHeight="700.0" prefWidth="600.0" style="-fx-background-color: #1faee9;"
+                    BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="invalidLoginCredentials" alignment="CENTER" contentDisplay="CENTER" layoutX="540.0"
+                       layoutY="137.0" prefHeight="426.0" prefWidth="354.0"
+                       style="-fx-background-color: #FFFFFF; -fx-scale-z: 10;" textAlignment="CENTER" textFill="RED">
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                </Label>
+                <TextField layoutX="635.0" layoutY="188.0" prefHeight="58.0" prefWidth="174.0"
+                           style="-fx-background-color: transparent; -fx-text-fill: #24a0ed;" text="Типография">
+                    <font>
+                        <Font name="SansSerif Regular" size="25.0"/>
+                    </font>
+                </TextField>
+                <Label layoutX="677.0" layoutY="271.0" prefHeight="30.0" prefWidth="90.0"
+                       style="-fx-text-fill: #A9A9A9;" text="Login">
+                    <font>
+                        <Font name="SansSerif Regular" size="30.0"/>
+                    </font>
+                </Label>
+                <Button fx:id="cancelButton" layoutX="628.0" layoutY="453.0" mnemonicParsing="false"
+                        style="-fx-background-color: transparent; -fx-text-fill: #A9A9A9; -fx-border-width: 2; -fx-border-color: #A9A9A9; -fx-border-radius: 20;"
+                        text="Cancel">
+                    <font>
+                        <Font size="15.0"/>
+                    </font>
+                </Button>
+                <TextField fx:id="loginUsernameTextField" layoutX="568.0" layoutY="351.0" prefHeight="30.0"
+                           prefWidth="300.0" promptText="Username / Email"
+                           style="-fx-border-width: 2; -fx-border-color: #A9A9A9; -fx-border-radius: 5;">
+                    <font>
+                        <Font name="SansSerif Regular" size="14.0"/>
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="TEXT"/>
+                    </cursor>
+                </TextField>
+                <PasswordField fx:id="loginPasswordPasswordField" layoutX="568.0" layoutY="394.0" prefHeight="30.0"
+                               prefWidth="300.0" promptText="Password"
+                               style="-fx-border-width: 1; -fx-border-color: #A9A9A9; -fx-border-radius: 5;">
+                    <font>
+                        <Font name="SansSerif Regular" size="14.0"/>
+                    </font>
+                </PasswordField>
+                <Button fx:id="LoginButton" layoutX="722.0" layoutY="453.0" mnemonicParsing="false"
+                        style="-fx-background-color: #24a0ed; -fx-text-fill: white; -fx-border-radius: 20; -fx-border-width: 2; -fx-border-color: #24a0ed;"
+                        text="Login" onAction="#onHelloButtonClick">
+                    <font>
+                        <Font size="15.0"/>
+                    </font>
+                </Button>
+                <Label fx:id="welcomeText"/>
+            </children>
+        </AnchorPane>
+    </top>
+</BorderPane>

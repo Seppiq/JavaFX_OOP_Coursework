@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.text.Font?>
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="624.0"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.demodemonoch.controller.UserController">
+    <children>
+        <!-- Таблица в которую мы будем выводит наш pojo -->
+        <TableView fx:id="tableUsers" layoutX="12.0" layoutY="62.0" prefHeight="324.0" prefWidth="600.0">
+            <columns>
+                <!-- Колонки таблицы -->
+                <TableColumn prefWidth="80.0" text="id" fx:id="id" />
+                <TableColumn prefWidth="150.0" text="firstName" fx:id="firstName" />
+                <TableColumn prefWidth="150.0" text="lastName" fx:id="lastName" />
+                <TableColumn prefWidth="220.0" text="position" fx:id="position" />
+            </columns>
+        </TableView>
+        <Label layoutX="14.0" layoutY="18.0" text="List all users:">
+            <font>
+                <Font name="Verdana" size="24.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>
