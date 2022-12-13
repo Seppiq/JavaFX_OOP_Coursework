@@ -1,6 +1,5 @@
 package com.example.demodemonoch;
 
-import com.example.demodemonoch.controller.UserController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

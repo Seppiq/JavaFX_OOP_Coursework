@@ -7,34 +7,34 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class HelloApplication extends Application {
 
-    Stage stage = new Stage();
+    private double x, y;
 
     @Override
-    public void start(Stage prStage) throws IOException {
-//        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-//        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-//        stage.setTitle("Hello!");
-//        stage.setScene(scene);
-//        stage.show();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
-        prStage.setTitle("Hello World");
-        prStage.setScene(new Scene(root, 1000, 800));
-        prStage.show();
+    public void start(Stage primaryStage) throws IOException {
+
+        Parent root = FXMLLoader.load(getClass().getResource("home-table.fxml"));
+        primaryStage.setScene(new Scene(root));
+        //primaryStage.initStyle(StageStyle.UNDECORATED);
+
+
+        //drag it here
+        root.setOnMousePressed(event -> {
+            x = event.getSceneX();
+            y = event.getSceneY();
+        });
+        root.setOnMouseDragged(event -> {
+
+            primaryStage.setX(event.getScreenX() - x);
+            primaryStage.setY(event.getScreenY() - y);
+
+        });
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
-        launch();
-    }
-
-    public void showWindow() throws Exception {
-        start(stage);
-    }
-
-    public void hideWindow() throws Exception {
-        stage.close();
+        launch(args);
     }
 }

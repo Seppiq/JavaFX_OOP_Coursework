@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "id": 1,
+    "firstName": "Kirill",
+    "lastName": "Semak",
+    "position": "pos"
+  },
+  {
+    "id": 3,
+    "firstName": "Kirill",
+    "lastName": "Semak",
+    "position": "pos"
+  },
+  {
+    "id": 6,
+    "firstName": "Рома",
+    "lastName": "Илларионов",
+    "position": "Убощик"
+  }
+]
