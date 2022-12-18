@@ -7,10 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import com.example.demo1.Model.Student;
 import com.example.demo1.Repository.StudentRepository;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,19 +111,53 @@ public class StudentRepositoryImpl implements StudentRepository {
 
     @Override
     public void saveStudent(Student student) {
+//        try {
+//            Gson gson = new Gson();
+//            List<Student> students = new ArrayList<>(getAllStudent());
+//            for (Student student1 : students) {
+//                if (student1.getId() == student.getId()) {
+//                    throw new Exception();
+//                } else {
+//                    students.add(student);
+//                    PrintWriter out = new PrintWriter(new FileWriter(StudentController.filepath));
+//                    out.write(gson.toJson(students));
+//                    out.close();
+//                }
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Error: " + e);
+//        }
+
         try {
+            if(StudentController.filepath == null){
+                File file = new File( "employee.json");
+
+                PrintWriter writer = new PrintWriter(file);
+                writer.write("[]");
+                writer.close();
+                StudentController.filepath = file.getPath();
+            }
             Gson gson = new Gson();
             List<Student> students = new ArrayList<>(getAllStudent());
-            for (Student student1 : students) {
-                if (student1.getId() == student.getId()) {
-                    throw new Exception();
-                } else {
-                    students.add(student);
-                    PrintWriter out = new PrintWriter(new FileWriter(StudentController.filepath));
-                    out.write(gson.toJson(students));
-                    out.close();
-                }
+            if(getStudentById(student.getId()) == null){
+                students.add(student);
+                PrintWriter out = new PrintWriter(new FileWriter(StudentController.filepath));
+                out.write(gson.toJson(students));
+                out.close();
             }
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+        }
+    }
+
+    @Override
+    public void saveFile(File saveFile) {
+        Gson gson = new Gson();
+        List<Student> students = new ArrayList<>(getAllStudent());
+        try {
+            PrintWriter out = new PrintWriter(new FileWriter(saveFile.getPath()));
+            out.write(gson.toJson(students));
+            out.close();
         } catch (Exception e) {
             System.out.println("Error: " + e);
         }

@@ -1,12 +1,12 @@
 package com.example.demo1.Service.Impl;
 
 
-
 import com.example.demo1.Model.Student;
 import com.example.demo1.Repository.Impl.StudentRepositoryImpl;
 import com.example.demo1.Repository.StudentRepository;
 import com.example.demo1.Service.StudentService;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -16,7 +16,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student getStudentById(int id) {
-       return studentRepository.getStudentById(id);
+
+        return studentRepository.getStudentById(id);
     }
 
     @Override
@@ -31,7 +32,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> nameSearch(String str) {
-       return studentRepository.nameSearch(str);
+        return studentRepository.nameSearch(str);
     }
 
     @Override
@@ -52,5 +53,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deleteStudentById(int id) {
         studentRepository.deleteStudentById(id);
+    }
+
+    @Override
+    public void saveFile(File saveFile) {
+        studentRepository.saveFile(saveFile);
     }
 }

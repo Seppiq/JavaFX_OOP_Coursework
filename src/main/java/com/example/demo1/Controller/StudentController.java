@@ -26,7 +26,6 @@ public class StudentController {
     private final StudentService studentService = new StudentServiceImpl();
 
     static public String filepath;
-
     @FXML
     private ToggleGroup find;
 
@@ -47,6 +46,9 @@ public class StudentController {
 
     @FXML
     private Button cancel;
+
+    @FXML
+    private Button export;
 
     @FXML
     private TextField idInput;
@@ -96,6 +98,15 @@ public class StudentController {
     @FXML
     void initialize() {
 
+        export.setOnAction(actionEvent -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON", "*.json"));
+            File file = fileChooser.showSaveDialog(export.getScene().getWindow());
+            if (file != null) {
+                studentService.saveFile(file);
+            }
+        });
+
         btnOpen.setOnAction(actionEvent -> {
             FileChooser fileChooser = new FileChooser();
             File file = fileChooser.showOpenDialog(btnOpen.getScene().getWindow());
@@ -108,8 +119,15 @@ public class StudentController {
 
         btnDelete.setOnAction(actionEvent -> {
             if (!table.getItems().isEmpty()) {
-                delete();
-                updateTable(studentService.getAllStudents());
+                Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION, "Вы действительно хотите удалить" + " ?", ButtonType.YES, ButtonType.NO);
+                alert1.showAndWait();
+                if (alert1.getResult() == ButtonType.YES) {
+                    delete();
+                    updateTable(studentService.getAllStudents());
+                    new Alert(Alert.AlertType.INFORMATION, "Запись удалена").show();
+                }
+            } else if (table.getItems().isEmpty()) {
+                new Alert(Alert.AlertType.INFORMATION, "Table is empty").show();
             }
         });
 
@@ -121,19 +139,19 @@ public class StudentController {
         });
 
         btnAdd.setOnAction(actionEvent -> {
+            addPanel.setStyle("visibility: visible");
 
-            if (!table.getItems().isEmpty()) {
-                addPanel.setStyle("visibility: visible");
-
-                submit.setOnAction(action -> {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Добавить " + " ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
-                    alert.showAndWait();
-                    if (alert.getResult() == ButtonType.YES) {
-                        add();
-                        updateTable(studentService.getAllStudents());
-                    }
-                });
-            }
+            submit.setOnAction(action -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Добавить " + " ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+                alert.showAndWait();
+                if (alert.getResult() == ButtonType.YES) {
+                    add();
+                    updateTable(studentService.getAllStudents());
+                }
+                if (alert.getResult() == ButtonType.CANCEL) {
+                    clearInput();
+                }
+            });
         });
 
 
