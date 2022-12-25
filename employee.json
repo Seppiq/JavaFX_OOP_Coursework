@@ -1,1 +1,48 @@
-[{"id":1,"firstName":"2","lastName":"3","idInstruction":4}]
+[
+  {
+    "id": 1,
+    "firstName": "кирилл",
+    "lastName": "семак",
+    "age": 24,
+    "services": [
+      {
+        "id": 3,
+        "name": "clear",
+        "description": "kirill",
+        "price": 10,
+        "employeeId": 1
+      }
+    ],
+    "products": [
+      {
+        "id": 3,
+        "name": "clear",
+        "description": "kirill",
+        "quantity": 5,
+        "employeeId": 1
+      },
+      {
+        "id": 5,
+        "name": "clear2",
+        "description": "kirill2",
+        "quantity": 10,
+        "employeeId": 1
+      },
+      {
+        "id": 1,
+        "name": "ыфв",
+        "description": "ыва",
+        "quantity": 21,
+        "employeeId": 1
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "firstName": "sdf",
+    "lastName": "sdf",
+    "age": 32,
+    "services": [],
+    "products": []
+  }
+]

@@ -15,16 +15,15 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="476.0" prefWidth="740.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.Controller.EmployeeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="491.0" prefWidth="740.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.Controller.ServiceController">
     <children>
         <TableView fx:id="table" layoutX="14.0" layoutY="100.0" prefHeight="337.0" prefWidth="438.0">
             <columns>
-                <TableColumn fx:id="id" prefWidth="28.800020217895508" text="id" />
-                <TableColumn fx:id="firstName" text="name" />
-                <TableColumn fx:id="lastName" prefWidth="96.79998016357422" text="lastname" />
-                <TableColumn fx:id="idInstruction" prefWidth="55.20001220703125" text="age" />
-                <TableColumn fx:id="products" prefWidth="55.20001220703125" text="products" />
-                <TableColumn fx:id="services" prefWidth="55.20001220703125" text="services" />
+                <TableColumn fx:id="id" prefWidth="56.00000190734863" text="id" />
+                <TableColumn fx:id="name" prefWidth="127.99996185302734" text="name" />
+                <TableColumn fx:id="description" prefWidth="128.7999725341797" text="description" />
+                <TableColumn fx:id="price" prefWidth="123.20003662109377" text="price" />
+                <TableColumn fx:id="employeeId" prefWidth="123.20003662109377" text="employeeId" />
             </columns>
         </TableView>
         <!--                <AnchorPane fx:id="addPanel" layoutX="376.0" layoutY="308.0" prefHeight="239.0" prefWidth="178.0" style="-fx-background-color: white; visibility: hidden;">-->
@@ -40,7 +39,7 @@
         <TextField fx:id="findInput" layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="138.0" promptText="what to look for?" style="-fx-background-radius: 2em;" />
         <MenuBar layoutX="152.0" layoutY="14.0" prefHeight="26.0" prefWidth="102.0">
             <menus>
-                <Menu mnemonicParsing="false" text="What search?">
+                <Menu mnemonicParsing="false" text="what search?">
                     <items>
                         <RadioMenuItem fx:id="nameRadio" mnemonicParsing="false" selected="true" text="name">
                             <toggleGroup>
@@ -48,7 +47,7 @@
                             </toggleGroup>
                         </RadioMenuItem>
                         <RadioMenuItem fx:id="instructionRadio" mnemonicParsing="false" text="price" toggleGroup="$find" />
-                        <RadioMenuItem fx:id="surnameRadio" mnemonicParsing="false" text="lastname" toggleGroup="$find" />
+                        <RadioMenuItem fx:id="surnameRadio" mnemonicParsing="false" text="description" toggleGroup="$find" />
                     </items>
                 </Menu>
             </menus>
@@ -71,13 +70,15 @@
                         <Label text="id" />
                         <Label text="firstname" GridPane.rowIndex="1" />
                         <Label text="lastname" GridPane.rowIndex="2" />
-                        <Button fx:id="submit" mnemonicParsing="false" prefHeight="26.0" prefWidth="113.0" text="submit" GridPane.rowIndex="4" />
-                        <Button fx:id="cancel" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" text="cancel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label text="price" GridPane.rowIndex="3" />
+                        <Label text="employeeId" GridPane.rowIndex="4" />
+                        <Button fx:id="submit" mnemonicParsing="false" prefHeight="26.0" prefWidth="113.0" text="submit" GridPane.rowIndex="5" />
+                        <Button fx:id="cancel" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" text="cancel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                         <TextField fx:id="idInput" GridPane.columnIndex="1" />
                         <TextField fx:id="nameInput" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="surnameInput" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label text="Label" GridPane.rowIndex="3" />
                         <TextField fx:id="instructionInput" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="employeeIdInput" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     </children>
                 </GridPane>
             </children>

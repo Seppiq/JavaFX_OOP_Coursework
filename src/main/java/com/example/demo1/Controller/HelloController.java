@@ -19,8 +19,30 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class HelloController {
+
+    @FXML
+    public Pane pnlEmployee;
+    @FXML
+    public VBox pnEmployee;
+    @FXML
+    public Pane pnlProducts;
+    @FXML
+    public VBox pnProducts;
+    @FXML
+    public Pane pnlServices;
+    @FXML
+    public VBox pnServices;
+
     @FXML
     private VBox pnItems = null;
+
+    @FXML
+    private VBox pnItems2 = null;
+
+    @FXML
+    private VBox pnItems3 = null;
+
+
     @FXML
     private Button btnOverview;
 
@@ -29,18 +51,6 @@ public class HelloController {
 
     @FXML
     private Button btnCustomers;
-
-    @FXML
-    private Button btnMenus;
-
-    @FXML
-    private Button btnPackages;
-
-    @FXML
-    private Button btnSettings;
-
-    @FXML
-    private Button btnSignout;
 
     @FXML
     private Pane pnlCustomer;
@@ -54,68 +64,97 @@ public class HelloController {
     @FXML
     private Pane pnlMenus;
 
-    public void handleClicks(ActionEvent actionEvent) {
-        if (actionEvent.getSource() == btnCustomers) {
-            pnlCustomer.setStyle("-fx-background-color : #1620A1");
-            pnlCustomer.toFront();
-        }
-        if (actionEvent.getSource() == btnMenus) {
-            pnlMenus.setStyle("-fx-background-color : #53639F");
-            pnlMenus.toFront();
-        }
-        if (actionEvent.getSource() == btnOverview) {
-            pnlOverview.setStyle("-fx-background-color : #02030A");
-            pnlOverview.toFront();
-        }
-        if (actionEvent.getSource() == btnOrders) {
-            pnlOrders.setStyle("-fx-background-color : #464F67");
-            pnlOrders.toFront();
+//    public void handleClicks(ActionEvent actionEvent) {
+//        if (actionEvent.getSource() == btnCustomers) {
+//            //pnlCustomer.setStyle("-fx-background-color : #ffa500");
+//            showProduct();
+//            pnlCustomer.toFront();
+//        }
+//        if (actionEvent.getSource() == btnOverview) {
+//            //setStyle("-fx-background-color : #ffa500");
+//            showEmployee();
+//            pnlOverview.toFront();
+//        }
+//        if (actionEvent.getSource() == btnOrders) {
+//            //pnlOrders.setStyle("-fx-background-color : #ffa500");
+//            showService();
+//            pnlOrders.toFront();
+//        }
+//    }
+
+//    @FXML
+//    public void showEmployee() {
+//        Node[] nodes = new Node[1];
+//        for (int i = 0; i < nodes.length; i++) {
+//            try {
+//
+//                final int j = i;
+//                nodes[i] = FXMLLoader.load(getClass().getResource("Item.fxml"));
+//
+//                //give the items some effect
+//
+////                nodes[i].setOnMouseEntered(event -> {
+////                    nodes[j].setStyle("-fx-background-color : #273fff");
+////                });
+////                nodes[i].setOnMouseExited(event -> {
+////                    nodes[j].setStyle("-fx-background-color : #273fff");
+////                });
+//                pnItems.getChildren().add(nodes[i]);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+
+    @FXML
+    public void showEmployee() {
+        pnlEmployee.toFront();
+        try {
+            Node node = FXMLLoader.load(getClass().getResource("Item.fxml"));
+            pnEmployee.getChildren().add(node);
+
+        } catch (
+                IOException e) {
+            e.printStackTrace();
         }
     }
 
     @FXML
-    void showEmployee() {
-        Node[] nodes = new Node[1];
-        for (int i = 0; i < nodes.length; i++) {
-            try {
+    public void showProduct() {
+        pnlProducts.toFront();
+        try {
+            Node node = FXMLLoader.load(getClass().getResource("item3.fxml"));
+            pnProducts.getChildren().add(node);
 
-                final int j = i;
-                nodes[i] = FXMLLoader.load(getClass().getResource("Item.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-                //give the items some effect
+    @FXML
+    public void showService() {
+        pnlServices.toFront();
+        try {
+            Node node = FXMLLoader.load(getClass().getResource("item2.fxml"));
+            pnServices.getChildren().add(node);
 
-                nodes[i].setOnMouseEntered(event -> {
-                    nodes[j].setStyle("-fx-background-color : #0A0E3F");
-                });
-                nodes[i].setOnMouseExited(event -> {
-                    nodes[j].setStyle("-fx-background-color : #02030A");
-                });
-                pnItems.getChildren().add(nodes[i]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     @FXML
     void initialize() {
-        showEmployee();
-//                Node[] nodes = new Node[10];
-//        for (int i = 0; i < nodes.length; i++) {
-//
-//            final int j = i;
-//            nodes[i] = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Item.fxml")));
-//
-//            //give the items some effect
-//
-//            nodes[i].setOnMouseEntered(event -> {
-//                nodes[j].setStyle("-fx-background-color : #0A0E3F");
-//            });
-//            nodes[i].setOnMouseExited(event -> {
-//                nodes[j].setStyle("-fx-background-color : #02030A");
-//            });
-//            pnItems.getChildren().add(nodes[i]);
-//        }
+        btnOverview.setOnAction(actionEvent -> {
+            showEmployee();
+        });
 
+        btnCustomers.setOnAction(actionEvent -> {
+            showProduct();
+        });
+
+        btnOrders.setOnAction(actionEvent -> {
+            showService();
+        });
     }
 }
