@@ -1,22 +1,13 @@
 package com.example.demo1.Controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.Objects;
-import java.util.ResourceBundle;
 
 public class HelloController {
 
@@ -63,48 +54,6 @@ public class HelloController {
 
     @FXML
     private Pane pnlMenus;
-
-//    public void handleClicks(ActionEvent actionEvent) {
-//        if (actionEvent.getSource() == btnCustomers) {
-//            //pnlCustomer.setStyle("-fx-background-color : #ffa500");
-//            showProduct();
-//            pnlCustomer.toFront();
-//        }
-//        if (actionEvent.getSource() == btnOverview) {
-//            //setStyle("-fx-background-color : #ffa500");
-//            showEmployee();
-//            pnlOverview.toFront();
-//        }
-//        if (actionEvent.getSource() == btnOrders) {
-//            //pnlOrders.setStyle("-fx-background-color : #ffa500");
-//            showService();
-//            pnlOrders.toFront();
-//        }
-//    }
-
-//    @FXML
-//    public void showEmployee() {
-//        Node[] nodes = new Node[1];
-//        for (int i = 0; i < nodes.length; i++) {
-//            try {
-//
-//                final int j = i;
-//                nodes[i] = FXMLLoader.load(getClass().getResource("Item.fxml"));
-//
-//                //give the items some effect
-//
-////                nodes[i].setOnMouseEntered(event -> {
-////                    nodes[j].setStyle("-fx-background-color : #273fff");
-////                });
-////                nodes[i].setOnMouseExited(event -> {
-////                    nodes[j].setStyle("-fx-background-color : #273fff");
-////                });
-//                pnItems.getChildren().add(nodes[i]);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 
     @FXML
     public void showEmployee() {

@@ -193,15 +193,19 @@ public class ProductController {
         productService.updateEmployeeById(id, product);
     }
 
-    private void add() {
-        Product product = new Product();
+    private void add() throws NumberFormatException {
+        try {
+            Product product = new Product();
 
-        product.setId(Integer.valueOf(idInput.getText()));
-        product.setName(nameInput.getText());
-        product.setDescription(surnameInput.getText());
-        product.setQuantity(Integer.valueOf(instructionInput.getText()));
-        product.setEmployeeId(Integer.valueOf(employeeIdInput.getText()));
-        productService.createEmployee(product);
+            product.setId(Integer.valueOf(idInput.getText()));
+            product.setName(nameInput.getText());
+            product.setDescription(surnameInput.getText());
+            product.setQuantity(Integer.valueOf(instructionInput.getText()));
+            product.setEmployeeId(Integer.valueOf(employeeIdInput.getText()));
+            productService.createEmployee(product);
+        } catch (NumberFormatException numberFormatException) {
+            numberFormatException.getMessage();
+        }
     }
 
 

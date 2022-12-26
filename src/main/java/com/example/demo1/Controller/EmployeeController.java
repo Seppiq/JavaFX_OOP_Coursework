@@ -3,9 +3,8 @@ package com.example.demo1.Controller;
 
 import com.example.demo1.Model.Context;
 import com.example.demo1.Model.Employee;
-import com.example.demo1.Model.Product;
-import com.example.demo1.Service.Impl.EmployeeServiceImpl;
 import com.example.demo1.Service.EmployeeService;
+import com.example.demo1.Service.Impl.EmployeeServiceImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -205,8 +204,12 @@ public class EmployeeController {
         employee.setAge(Integer.valueOf(instructionInput.getText()));
         employee.setProducts(new ArrayList<>());
         employee.setServices(new ArrayList<>());
-        employeeService.createEmployee(employee);
-        updateTable(employeeService.getAllEmployees());
+        if (employee.getId() > 0) {
+            employeeService.createEmployee(employee);
+            updateTable(employeeService.getAllEmployees());
+        }
+        else
+            new Alert(Alert.AlertType.INFORMATION, "Invalid data").show();
     }
 
     private void updateTable(List<Employee> list) {
