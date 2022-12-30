@@ -1,0 +1,14 @@
+[
+  {
+    "employee_id": 1,
+    "product_id": 7
+  },
+  {
+    "employee_id": 1,
+    "product_id": 8
+  },
+  {
+    "employee_id": 4,
+    "product_id": 1
+  }
+]

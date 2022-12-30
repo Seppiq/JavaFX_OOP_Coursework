@@ -2,13 +2,15 @@ package com.example.demo1.Repository;
 
 
 import com.example.demo1.Model.Employee;
+import com.example.demo1.Model.ReferenceTableEmployeeProduct;
+import com.example.demo1.Model.ReferenceTableEmployeeService;
 
 import java.io.File;
 import java.util.List;
 
 public interface EmployeeRepository {
 
-    List<Employee> instructionSearch(String str);
+    List<Employee> search(String str);
 
     List<Employee> nameSearch(String str);
 
@@ -20,10 +22,11 @@ public interface EmployeeRepository {
 
     void updateEmployeeById(int id, Employee employee);
 
-    void saveEmployee(Employee employee);
+    void saveEmployee(Employee employee ,
+                      ReferenceTableEmployeeService referenceTableEmployeeService,
+                      ReferenceTableEmployeeProduct referenceTableEmployeeProduct);
 
     public void saveFile(File saveFile);
 
-    Employee getStudentById(int id);
-
+    Employee getEmployeeById(int id);
 }

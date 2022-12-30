@@ -1,11 +1,10 @@
 package com.example.demo1.Controller;
 
 import com.example.demo1.Model.Context;
+import com.example.demo1.Model.ReferenceTableEmployeeService;
 import com.example.demo1.Model.Service;
-import com.example.demo1.Service.EmployeeService;
-import com.example.demo1.Service.Impl.EmployeeServiceImpl;
-import com.example.demo1.Service.Impl.ServiceServiceImpl;
-import com.example.demo1.Service.ServiceService;
+import com.example.demo1.Repository.Impl.ServiceRepoImpl;
+import com.example.demo1.Repository.ServiceRepo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,9 +19,7 @@ import java.util.List;
 
 @Data
 public class ServiceController {
-    private final ServiceService serviceService = new ServiceServiceImpl();
-
-    private final EmployeeService employeeService = new EmployeeServiceImpl();
+    private final ServiceRepo serviceRepo = new ServiceRepoImpl();
 
     @FXML
     private ToggleGroup find;
@@ -100,36 +97,26 @@ public class ServiceController {
     @FXML
     void initialize() {
 
-        if (Context.filepath != null)
-            updateTable(serviceService.getAllEmployees());
+        updateTable(serviceRepo.getAllEmployees());
 
         export.setOnAction(actionEvent -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON", "*.json"));
             File file = fileChooser.showSaveDialog(export.getScene().getWindow());
             if (file != null) {
-                serviceService.saveFile(file);
-            }
-        });
-
-        btnOpen.setOnAction(actionEvent -> {
-            FileChooser fileChooser = new FileChooser();
-            File file = fileChooser.showOpenDialog(btnOpen.getScene().getWindow());
-            if (file != null) {
-                Context.filepath = file.getPath();
-                updateTable(serviceService.getAllEmployees());
+                serviceRepo.saveFile(file);
             }
         });
 
 
         btnDelete.setOnAction(actionEvent -> {
             if (!table.getSelectionModel().isEmpty()) {
-                Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION, "Вы действительно хотите удалить" + " ?", ButtonType.YES, ButtonType.NO);
+                Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION, "Delete" + " ?", ButtonType.YES, ButtonType.NO);
                 alert1.showAndWait();
                 if (alert1.getResult() == ButtonType.YES) {
                     delete();
-                    updateTable(serviceService.getAllEmployees());
-                    new Alert(Alert.AlertType.INFORMATION, "Запись удалена").show();
+                    updateTable(serviceRepo.getAllEmployees());
+                    new Alert(Alert.AlertType.INFORMATION, "Deleted").show();
                 }
             } else if (table.getItems().isEmpty()) {
                 new Alert(Alert.AlertType.INFORMATION, "Table is empty").show();
@@ -145,12 +132,12 @@ public class ServiceController {
             addPanel.setStyle("visibility: visible");
 
             submit.setOnAction(action -> {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Добавить " + " ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Add " + " ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
                 alert.showAndWait();
                 if (alert.getResult() == ButtonType.YES) {
                     add();
-                    updateTable(serviceService.getAllEmployees());
-                    new Alert(Alert.AlertType.INFORMATION, "Запись добавлена").show();
+                    updateTable(serviceRepo.getAllEmployees());
+                    new Alert(Alert.AlertType.INFORMATION, "Added").show();
                 }
                 if (alert.getResult() == ButtonType.CANCEL) {
                     clearInput();
@@ -166,19 +153,19 @@ public class ServiceController {
 
                 submit.setOnAction(action -> {
                     update();
-                    updateTable(serviceService.getAllEmployees());
+                    updateTable(serviceRepo.getAllEmployees());
                     addPanel.setStyle("visibility: hidden;");
                     clearInput();
-                    new Alert(Alert.AlertType.INFORMATION, "Запись обновлена").show();
+                    new Alert(Alert.AlertType.INFORMATION, "Updated").show();
                 });
             }
         });
 
         findInput.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!table.getItems().isEmpty()) {
-                if (nameRadio.isSelected()) updateTable(serviceService.nameSearch(newValue));
-                else if (surnameRadio.isSelected()) updateTable(serviceService.surnameSearch(newValue));
-                else if (instructionRadio.isSelected()) updateTable(serviceService.instructionSearch(newValue));
+                if (nameRadio.isSelected()) updateTable(serviceRepo.nameSearch(newValue));
+                else if (surnameRadio.isSelected()) updateTable(serviceRepo.surnameSearch(newValue));
+                else if (instructionRadio.isSelected()) updateTable(serviceRepo.instructionSearch(newValue));
             }
         });
     }
@@ -190,8 +177,7 @@ public class ServiceController {
         service.setName(nameInput.getText());
         service.setDescription(surnameInput.getText());
         service.setPrice(Integer.valueOf(instructionInput.getText()));
-        service.setEmployeeId(Integer.valueOf(employeeIdInput.getText()));
-        serviceService.updateEmployeeById(id, service);
+        serviceRepo.updateEmployeeById(id, service);
     }
 
     private void add() {
@@ -201,8 +187,12 @@ public class ServiceController {
         service.setName(nameInput.getText());
         service.setDescription(surnameInput.getText());
         service.setPrice(Integer.valueOf(instructionInput.getText()));
-        service.setEmployeeId(Integer.valueOf(employeeIdInput.getText()));
-        serviceService.createEmployee(service);
+
+        ReferenceTableEmployeeService employeeService = new ReferenceTableEmployeeService();
+        employeeService.setService_id(service.getId());
+        employeeService.setEmployee_id(Integer.valueOf(employeeIdInput.getText()));
+
+        serviceRepo.saveEmployee(service, employeeService);
     }
 
 
@@ -212,12 +202,11 @@ public class ServiceController {
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         description.setCellValueFactory(new PropertyValueFactory<>("description"));
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
-        employeeId.setCellValueFactory(new PropertyValueFactory<>("employeeId"));
         table.setItems(students);
     }
 
     private void delete() {
-        serviceService.deleteEmployeeById(table.getSelectionModel().getSelectedItem().getId());
+        serviceRepo.deleteEmployeeById(table.getSelectionModel().getSelectedItem().getId());
     }
 
     private void clearInput() {
@@ -225,6 +214,7 @@ public class ServiceController {
         nameInput.setText("");
         surnameInput.setText("");
         instructionInput.setText("");
+        employeeIdInput.setText("");
     }
 
     private void fillingInput() {
@@ -232,6 +222,5 @@ public class ServiceController {
         nameInput.setText(table.getSelectionModel().getSelectedItem().getName());
         surnameInput.setText(table.getSelectionModel().getSelectedItem().getDescription());
         instructionInput.setText(table.getSelectionModel().getSelectedItem().getPrice().toString());
-        employeeIdInput.setText(table.getSelectionModel().getSelectedItem().getEmployeeId().toString());
     }
 }

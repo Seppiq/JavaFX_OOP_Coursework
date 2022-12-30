@@ -2,7 +2,11 @@ package com.example.demo1.Repository.Impl;
 
 import com.example.demo1.Model.Context;
 import com.example.demo1.Model.Employee;
+import com.example.demo1.Model.ReferenceTableEmployeeProduct;
+import com.example.demo1.Model.ReferenceTableEmployeeService;
+import com.example.demo1.Repository.EmployeeProductRepository;
 import com.example.demo1.Repository.EmployeeRepository;
+import com.example.demo1.Repository.EmployeeServiceRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -15,6 +19,9 @@ import java.util.List;
 
 public class EmployeeRepositoryImpl implements EmployeeRepository {
 
+    private final EmployeeProductRepository employeeProductRepository = new EmployeeProductRepositoryImpl();
+
+    private final EmployeeServiceRepository employeeServiceRepository = new EmployeeServiceRepositoryImpl();
     private final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .create();
@@ -34,7 +41,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     }
 
     @Override
-    public List<Employee> instructionSearch(String str) {
+    public List<Employee> search(String str) {
         List<Employee> employees = new ArrayList<>(getAllEmployees());
         employees.removeIf(elem -> !elem.getAge().toString().startsWith(str));
         return employees;
@@ -42,16 +49,11 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
 
     @Override
     public void updateEmployeeById(int id, Employee employee) {
-        Employee copy = getStudentById(id);
-        if (employee.getId() > 0 && employee.getAge()>0){
-            copy.setId(employee.getId());
-            copy.setFirstName(employee.getFirstName());
-            copy.setLastName(employee.getLastName());
-            copy.setAge(employee.getAge());
-            copy.setServices(employee.getServices());
-            copy.setProducts(employee.getProducts());
-        }
-        else throw new RuntimeException();
+        Employee copy = getEmployeeById(id);
+        copy.setId(employee.getId());
+        copy.setFirstName(employee.getFirstName());
+        copy.setLastName(employee.getLastName());
+        copy.setAge(employee.getAge());
 
         List<Employee> heads = new ArrayList<>(getAllEmployees());
         try {
@@ -61,7 +63,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
                     heads.add(i, copy);
                 }
             }
-            PrintWriter out = new PrintWriter(new FileWriter(Context.filepath));
+            PrintWriter out = new PrintWriter(new FileWriter(Context.employeeFilePath));
             out.write(gson.toJson(heads));
             out.close();
         } catch (Exception e) {
@@ -70,9 +72,28 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     }
 
     @Override
+    public void saveEmployee(Employee employee,
+                             ReferenceTableEmployeeService referenceTableEmployeeService,
+                             ReferenceTableEmployeeProduct referenceTableEmployeeProduct) {
+        try {
+            List<Employee> employees = new ArrayList<>(getAllEmployees());
+            if (getEmployeeById(employee.getId()) == null) {
+                employeeProductRepository.save(referenceTableEmployeeProduct);
+                employeeServiceRepository.save(referenceTableEmployeeService);
+                employees.add(employee);
+                PrintWriter out = new PrintWriter(new FileWriter(Context.employeeFilePath));
+                out.write(gson.toJson(employees));
+                out.close();
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+        }
+    }
+
+    @Override
     public List<Employee> getAllEmployees() {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(Context.filepath));
+            BufferedReader reader = new BufferedReader(new FileReader(Context.employeeFilePath));
 
             Type employeeListType = new TypeToken<List<Employee>>() {
             }.getType();
@@ -90,35 +111,14 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
             List<Employee> employees = new ArrayList<>(getAllEmployees());
 
             for (int i = 0; i < employees.size(); i++)
-                if (employees.get(i).getId() == id)
+                if (employees.get(i).getId() == id) {
                     employees.remove(i);
-
-            PrintWriter out = new PrintWriter(new FileWriter(Context.filepath));
+                    employeeProductRepository.deleteByEmployeeId(employees.get(i).getId());
+                    employeeServiceRepository.deleteByServiceId(employees.get(i).getId());
+                }
+            PrintWriter out = new PrintWriter(new FileWriter(Context.employeeFilePath));
             out.write(gson.toJson(employees));
             out.close();
-        } catch (Exception e) {
-            System.out.println("Error: " + e);
-        }
-    }
-
-    @Override
-    public void saveEmployee(Employee employee) {
-        try {
-            if (Context.filepath == null) {
-                File file = new File("employee.json");
-                PrintWriter writer = new PrintWriter(file);
-                writer.write("[]");
-                writer.close();
-                Context.filepath = file.getPath();
-            }
-
-            List<Employee> employees = new ArrayList<>(getAllEmployees());
-            if (getStudentById(employee.getId()) == null && employee.getId() > 0) {
-                employees.add(employee);
-                PrintWriter out = new PrintWriter(new FileWriter(Context.filepath));
-                out.write(gson.toJson(employees));
-                out.close();
-            }
         } catch (Exception e) {
             System.out.println("Error: " + e);
         }
@@ -137,11 +137,11 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     }
 
     @Override
-    public Employee getStudentById(int id) {
+    public Employee getEmployeeById(int id) {
         try {
             List<Employee> employees = new ArrayList<>(getAllEmployees());
             for (Employee employee : employees) {
-                if (employee.getId() == id && id > 0) {
+                if (employee.getId() == id) {
                     return employee;
                 }
             }

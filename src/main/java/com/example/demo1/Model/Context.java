@@ -1,19 +1,18 @@
 package com.example.demo1.Model;
 
-import com.example.demo1.Controller.EmployeeController;
-import com.example.demo1.Controller.ProductController;
-import com.example.demo1.Controller.ServiceController;
 import lombok.Data;
 
 @Data
 public class Context {
 
-    public static String filepath;
+    public static String employeeFilePath = "employee.json";
 
-    private ServiceController serviceController;
+    public static String productFilePath = "product.json";
 
-    private ProductController productController;
+    public static String serviceFilePath = "service.json";
 
-    private EmployeeController employeeController;
+    public static String employeeProductFilepath = "employeeProduct.json";
+
+    public static String employeeServiceFilePath = "employeeService.json";
 
 }

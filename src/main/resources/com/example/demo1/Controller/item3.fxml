@@ -10,7 +10,6 @@
                 <TableColumn fx:id="name" prefWidth="127.99996185302734" text="name" />
                 <TableColumn fx:id="description" prefWidth="128.7999725341797" text="description" />
                 <TableColumn fx:id="price" prefWidth="123.20003662109377" text="price" />
-                <TableColumn fx:id="employeeId" prefWidth="123.20003662109377" text="employeeId" />
             </columns>
         </TableView>
         <!--                <AnchorPane fx:id="addPanel" layoutX="376.0" layoutY="308.0" prefHeight="239.0" prefWidth="178.0" style="-fx-background-color: white; visibility: hidden;">-->

@@ -18,8 +18,4 @@ public class Employee {
     private String lastName;
 
     private Integer age;
-
-    private List<Service> services;
-
-    private List<Product> products;
 }

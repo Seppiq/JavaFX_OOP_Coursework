@@ -1,11 +1,9 @@
 package com.example.demo1.Controller;
 
-import com.example.demo1.Model.Context;
 import com.example.demo1.Model.Product;
-import com.example.demo1.Service.EmployeeService;
-import com.example.demo1.Service.Impl.EmployeeServiceImpl;
-import com.example.demo1.Service.Impl.ProductServiceImpl;
-import com.example.demo1.Service.ProductService;
+import com.example.demo1.Model.ReferenceTableEmployeeProduct;
+import com.example.demo1.Repository.Impl.ProductRepoImpl;
+import com.example.demo1.Repository.ProductRepo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,13 +14,12 @@ import javafx.stage.FileChooser;
 import lombok.Data;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 @Data
 public class ProductController {
-    private final ProductService productService = new ProductServiceImpl();
-
-    private final EmployeeService employeeService = new EmployeeServiceImpl();
+    ProductRepo productService = new ProductRepoImpl();
 
     static public String filepath;
     @FXML
@@ -53,7 +50,7 @@ public class ProductController {
     private TextField idInput;
 
     @FXML
-    private TextField instructionInput;
+    private TextField quantityInput;
 
     @FXML
     private TextField nameInput;
@@ -100,8 +97,7 @@ public class ProductController {
     @FXML
     void initialize() {
 
-        if (Context.filepath != null)
-            updateTable(productService.getAllEmployees());
+        updateTable(productService.getAllProducts());
 
 
         export.setOnAction(actionEvent -> {
@@ -113,15 +109,6 @@ public class ProductController {
             }
         });
 
-        btnOpen.setOnAction(actionEvent -> {
-            FileChooser fileChooser = new FileChooser();
-            File file = fileChooser.showOpenDialog(btnOpen.getScene().getWindow());
-            if (file != null) {
-                filepath = file.getPath();
-                updateTable(productService.getAllEmployees());
-            }
-        });
-
 
         btnDelete.setOnAction(actionEvent -> {
             if (!table.getSelectionModel().isEmpty()) {
@@ -129,7 +116,7 @@ public class ProductController {
                 alert1.showAndWait();
                 if (alert1.getResult() == ButtonType.YES) {
                     delete();
-                    updateTable(productService.getAllEmployees());
+                    updateTable(productService.getAllProducts());
                     new Alert(Alert.AlertType.INFORMATION, "Deleted").show();
                 }
             } else if (table.getItems().isEmpty()) {
@@ -150,7 +137,7 @@ public class ProductController {
                 alert.showAndWait();
                 if (alert.getResult() == ButtonType.YES) {
                     add();
-                    updateTable(productService.getAllEmployees());
+                    updateTable(productService.getAllProducts());
                     new Alert(Alert.AlertType.INFORMATION, "Created").show();
                 }
                 if (alert.getResult() == ButtonType.CANCEL) {
@@ -167,7 +154,7 @@ public class ProductController {
 
                 submit.setOnAction(action -> {
                     update();
-                    updateTable(productService.getAllEmployees());
+                    updateTable(productService.getAllProducts());
                     addPanel.setStyle("visibility: hidden;");
                     clearInput();
                     new Alert(Alert.AlertType.INFORMATION, "Updated").show();
@@ -188,9 +175,12 @@ public class ProductController {
         product.setId(Integer.valueOf(idInput.getText()));
         product.setName(nameInput.getText());
         product.setDescription(surnameInput.getText());
-        product.setQuantity(Integer.valueOf(instructionInput.getText()));
-        product.setEmployeeId(Integer.valueOf(employeeIdInput.getText()));
-        productService.updateEmployeeById(id, product);
+        product.setQuantity(Integer.valueOf(quantityInput.getText()));
+
+        ReferenceTableEmployeeProduct employeeProduct = new ReferenceTableEmployeeProduct();
+        employeeProduct.setProduct_id(product.getId());
+        employeeProduct.setEmployee_id(Integer.valueOf(employeeIdInput.getText()));
+        productService.updateProductById(id, product);
     }
 
     private void add() throws NumberFormatException {
@@ -200,9 +190,14 @@ public class ProductController {
             product.setId(Integer.valueOf(idInput.getText()));
             product.setName(nameInput.getText());
             product.setDescription(surnameInput.getText());
-            product.setQuantity(Integer.valueOf(instructionInput.getText()));
-            product.setEmployeeId(Integer.valueOf(employeeIdInput.getText()));
-            productService.createEmployee(product);
+            product.setQuantity(Integer.valueOf(quantityInput.getText()));
+
+            ReferenceTableEmployeeProduct employeeProduct = new ReferenceTableEmployeeProduct();
+            employeeProduct.setProduct_id(product.getId());
+            employeeProduct.setEmployee_id(Integer.valueOf(employeeIdInput.getText()));
+
+
+            productService.saveEmployee(product, employeeProduct);
         } catch (NumberFormatException numberFormatException) {
             numberFormatException.getMessage();
         }
@@ -215,19 +210,18 @@ public class ProductController {
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         description.setCellValueFactory(new PropertyValueFactory<>("description"));
         quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        employeeId.setCellValueFactory(new PropertyValueFactory<>("employeeId"));
         table.setItems(products);
     }
 
     private void delete() {
-        productService.deleteEmployeeById(table.getSelectionModel().getSelectedItem().getId());
+        productService.deleteProductById(table.getSelectionModel().getSelectedItem().getId());
     }
 
     private void clearInput() {
         idInput.setText("");
         nameInput.setText("");
         surnameInput.setText("");
-        instructionInput.setText("");
+        quantityInput.setText("");
         employeeIdInput.setText("");
     }
 
@@ -235,7 +229,6 @@ public class ProductController {
         idInput.setText(table.getSelectionModel().getSelectedItem().getId().toString());
         nameInput.setText(table.getSelectionModel().getSelectedItem().getName());
         surnameInput.setText(table.getSelectionModel().getSelectedItem().getDescription());
-        instructionInput.setText(table.getSelectionModel().getSelectedItem().getQuantity().toString());
-        employeeIdInput.setText(table.getSelectionModel().getSelectedItem().getEmployeeId().toString());
+        quantityInput.setText(table.getSelectionModel().getSelectedItem().getQuantity().toString());
     }
 }

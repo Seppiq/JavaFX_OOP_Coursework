@@ -1,0 +1,22 @@
+[
+  {
+    "employee_id": 1,
+    "service_id": 6
+  },
+  {
+    "employee_id": 1,
+    "service_id": 7
+  },
+  {
+    "employee_id": 1,
+    "service_id": 8
+  },
+  {
+    "employee_id": 1,
+    "service_id": 9
+  },
+  {
+    "employee_id": 4,
+    "service_id": 1
+  }
+]

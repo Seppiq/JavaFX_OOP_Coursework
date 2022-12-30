@@ -1,25 +1,33 @@
 package com.example.demo1.Repository.Impl;
 
+import com.example.demo1.Model.Context;
 import com.example.demo1.Model.Employee;
+import com.example.demo1.Model.ReferenceTableEmployeeService;
 import com.example.demo1.Model.Service;
 import com.example.demo1.Repository.EmployeeRepository;
+import com.example.demo1.Repository.EmployeeServiceRepository;
 import com.example.demo1.Repository.ServiceRepo;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.*;
+import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceRepoImpl implements ServiceRepo {
 
-    EmployeeRepository employeeRepository = new EmployeeRepositoryImpl();
+    EmployeeServiceRepository employeeServiceRepository = new EmployeeServiceRepositoryImpl();
+    private final Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .create();
 
     @Override
     public List<Service> instructionSearch(String str) {
         List<Service> services = new ArrayList<>(getAllEmployees());
-        services.removeIf(element -> !element.getEmployeeId().toString().startsWith(str));
+        services.removeIf(element -> !element.getId().toString().startsWith(str));
         return services;
     }
 
@@ -40,11 +48,12 @@ public class ServiceRepoImpl implements ServiceRepo {
     @Override
     public List<Service> getAllEmployees() {
         try {
-            List<Employee> allEmployees = employeeRepository.getAllEmployees();
-            List<Service> productList = new ArrayList<>();
-            for (Employee employee : allEmployees)
-                productList.addAll(employee.getServices());
-            return productList;
+            BufferedReader reader = new BufferedReader(new FileReader(Context.serviceFilePath));
+
+            Type serviceTypeList = new TypeToken<List<Service>>() {
+            }.getType();
+            List<Service> services = gson.fromJson(reader, serviceTypeList);
+            return services;
         } catch (Exception e) {
             System.out.println("Error: " + e);
         }
@@ -54,43 +63,39 @@ public class ServiceRepoImpl implements ServiceRepo {
     @Override
     public void deleteEmployeeById(int id) {
         try {
-            Service product = getServiceById(id);
-            Employee employee = employeeRepository.getStudentById(product.getEmployeeId());
-            List<Service> products = new ArrayList<>(employee.getServices());
 
-            for (int i = 0; i < products.size(); i++)
-                if (products.get(i).getId() == id)
-                    products.remove(i);
+            List<Service> services = new ArrayList<>(getAllEmployees());
 
-            employee.setServices(products);
-            employeeRepository.updateEmployeeById(employee.getId(), employee);
+            for (int i = 0; i < services.size(); i++)
+                if (services.get(i).getId() == id) {
+                    employeeServiceRepository.deleteByServiceId(services.get(i).getId());
+                    services.remove(i);
+                    break;
+                }
+            PrintWriter out = new PrintWriter(new FileWriter(Context.serviceFilePath));
+            out.write(gson.toJson(services));
+            out.close();
         } catch (Exception e) {
             System.out.println("Error: " + e);
         }
     }
 
     @Override
-    public void updateEmployeeById(int id, Service employee) {
+    public void updateEmployeeById(int id, Service service) {
         Service copy = getServiceById(id);
-        Employee employee1 = employeeRepository.getStudentById(employee.getEmployeeId());
-        copy.setId(employee.getId());
-        copy.setName(employee.getName());
-        copy.setDescription(employee.getDescription());
-        copy.setPrice(employee.getPrice());
-        copy.setEmployeeId(employee.getEmployeeId());
-
+        copy.setId(service.getId());
+        copy.setName(service.getName());
+        copy.setDescription(service.getDescription());
+        copy.setPrice(service.getPrice());
         try {
-            List<Service> products = new ArrayList<>(getAllEmployees());
+            List<Service> instructions = new ArrayList<>(getAllEmployees());
 
-            for (int i = 0; i < products.size(); i++) {
-                if (products.get(i).getId() == id) {
-                    products.remove(i);
-                    products.add(i, copy);
+            for (int i = 0; i < instructions.size(); i++) {
+                if (instructions.get(i).getId() == id) {
+                    instructions.remove(i);
+                    instructions.add(i, copy);
+                    break;
                 }
-            }
-            if (employeeRepository.getStudentById(employee.getEmployeeId()) != null) {
-                employee1.setServices(products);
-                employeeRepository.updateEmployeeById(employee1.getId(), employee1);
             }
         } catch (Exception e) {
             System.out.println("Error " + e);
@@ -98,17 +103,18 @@ public class ServiceRepoImpl implements ServiceRepo {
     }
 
     @Override
-    public void saveEmployee(Service service) {
+    public void saveEmployee(Service service, ReferenceTableEmployeeService
+            referenceTableEmployeeService) {
         try {
-            Employee employee = employeeRepository.getStudentById(service.getEmployeeId());
-            List<Service> productList = new ArrayList<>();
-            if (employee.getServices() != null)
-                productList = new ArrayList<>(employee.getServices());
-            if (getServiceById(service.getId()) == null &&
-                    employeeRepository.getStudentById(service.getEmployeeId()) != null) {
-                productList.add(service);
-                employee.setServices(productList);
-                employeeRepository.updateEmployeeById(employee.getId(), employee);
+
+            List<Service> instructions = new ArrayList<>(getAllEmployees());
+
+            if (getServiceById(service.getId()) == null) {
+                instructions.add(service);
+                employeeServiceRepository.save(referenceTableEmployeeService);
+                PrintWriter out = new PrintWriter(new FileWriter(Context.serviceFilePath));
+                out.write(gson.toJson(instructions));
+                out.close();
             }
         } catch (Exception e) {
             System.out.println("Error: " + e);

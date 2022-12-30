@@ -1,12 +1,14 @@
 package com.example.demo1.Model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Product {
 
     private Integer id;
@@ -16,6 +18,4 @@ public class Product {
     private String description;
 
     private Integer quantity;
-
-    private Integer employeeId;
 }

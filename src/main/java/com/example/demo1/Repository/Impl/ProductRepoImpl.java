@@ -1,17 +1,27 @@
 package com.example.demo1.Repository.Impl;
 
+import com.example.demo1.Model.Context;
 import com.example.demo1.Model.Employee;
 import com.example.demo1.Model.Product;
-import com.example.demo1.Repository.EmployeeRepository;
+import com.example.demo1.Model.ReferenceTableEmployeeProduct;
+import com.example.demo1.Repository.EmployeeProductRepository;
 import com.example.demo1.Repository.ProductRepo;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
-import java.io.File;
+import java.io.*;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductRepoImpl implements ProductRepo {
 
-    EmployeeRepository employeeRepository = new EmployeeRepositoryImpl();
+    EmployeeProductRepository employeeProductRepository = new EmployeeProductRepositoryImpl();
+
+    private final Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .create();
 
     @Override
     public List<Product> instructionSearch(String str) {
@@ -37,10 +47,11 @@ public class ProductRepoImpl implements ProductRepo {
     @Override
     public List<Product> getAllProducts() {
         try {
-            List<Employee> allEmployees = employeeRepository.getAllEmployees();
-            List<Product> productList = new ArrayList<>();
-            for (Employee employee : allEmployees)
-                productList.addAll(employee.getProducts());
+            BufferedReader reader = new BufferedReader(new FileReader(Context.productFilePath));
+
+            Type productTypeList = new TypeToken<List<Product>>() {
+            }.getType();
+            List<Product> productList = gson.fromJson(reader, productTypeList);
             return productList;
         } catch (Exception e) {
             System.out.println("Error: " + e);
@@ -49,18 +60,20 @@ public class ProductRepoImpl implements ProductRepo {
     }
 
     @Override
-    public void deleteEmployeeById(int id) {
+    public void deleteProductById(int id) {
         try {
-            Product product = getProductById(id);
-            Employee employee = employeeRepository.getStudentById(product.getEmployeeId());
-            List<Product> products = new ArrayList<>(employee.getProducts());
+            List<Product> products = new ArrayList<>(getAllProducts());
 
             for (int i = 0; i < products.size(); i++)
-                if (products.get(i).getId() == id)
+                if (products.get(i).getId() == id) {
+                    employeeProductRepository.deleteByEmployeeId(products.get(i).getId());
                     products.remove(i);
+                    break;
+                }
 
-            employee.setProducts(products);
-            employeeRepository.updateEmployeeById(employee.getId(), employee);
+            PrintWriter out = new PrintWriter(new FileWriter(Context.productFilePath));
+            out.write(gson.toJson(products));
+            out.close();
         } catch (Exception e) {
             System.out.println("Error: " + e);
         }
@@ -69,24 +82,17 @@ public class ProductRepoImpl implements ProductRepo {
     @Override
     public void updateProductById(int id, Product product) {
         Product copy = getProductById(id);
-        Employee employee = employeeRepository.getStudentById(product.getEmployeeId());
         copy.setId(product.getId());
         copy.setName(product.getName());
         copy.setDescription(product.getDescription());
         copy.setQuantity(product.getQuantity());
-        copy.setEmployeeId(product.getEmployeeId());
         try {
             List<Product> products = new ArrayList<>(getAllProducts());
-
             for (int i = 0; i < products.size(); i++) {
                 if (products.get(i).getId() == id) {
                     products.remove(i);
                     products.add(i, copy);
                 }
-            }
-            if (employeeRepository.getStudentById(product.getEmployeeId()) != null) {
-                employee.setProducts(products);
-                employeeRepository.updateEmployeeById(employee.getId(), employee);
             }
         } catch (Exception e) {
             System.out.println("Error " + e);
@@ -94,17 +100,15 @@ public class ProductRepoImpl implements ProductRepo {
     }
 
     @Override
-    public void saveEmployee(Product product) {
+    public void saveEmployee(Product product, ReferenceTableEmployeeProduct referenceTableEmployeeProduct) {
         try {
-            Employee employee = employeeRepository.getStudentById(product.getEmployeeId());
-            List<Product> productList = new ArrayList<>();
-            if (employee.getProducts() != null)
-                productList = new ArrayList<>(employee.getProducts());
-            if (getProductById(product.getId()) == null &&
-                    employeeRepository.getStudentById(product.getEmployeeId()) != null) {
-                productList.add(product);
-                employee.setProducts(productList);
-                employeeRepository.updateEmployeeById(employee.getId(), employee);
+            List<Product> products = new ArrayList<>(getAllProducts());
+            if (getProductById(product.getId()) == null) {
+                products.add(product);
+                employeeProductRepository.save(referenceTableEmployeeProduct);
+                PrintWriter out = new PrintWriter(new FileWriter(Context.productFilePath));
+                out.write(gson.toJson(products));
+                out.close();
             }
         } catch (Exception e) {
             System.out.println("Error: " + e);

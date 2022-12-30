@@ -1,62 +1,26 @@
 [
   {
-    "id": 1,
-    "firstName": "кирилл",
-    "lastName": "семак",
-    "age": 24,
-    "services": [
-      {
-        "id": 3,
-        "name": "clear",
-        "description": "kirill",
-        "price": 10,
-        "employeeId": 1
-      }
-    ],
-    "products": [
-      {
-        "id": 3,
-        "name": "clear",
-        "description": "kirill",
-        "quantity": 5,
-        "employeeId": 1
-      },
-      {
-        "id": 5,
-        "name": "clear2",
-        "description": "kirill2",
-        "quantity": 10,
-        "employeeId": 1
-      },
-      {
-        "id": 1,
-        "name": "ыфв",
-        "description": "ыва",
-        "quantity": 21,
-        "employeeId": 1
-      },
-      {
-        "id": 21,
-        "name": "sdaf",
-        "description": "sdf",
-        "quantity": 21,
-        "employeeId": 1
-      },
-      {
-        "id": 22,
-        "name": "dsf",
-        "description": "sdf",
-        "quantity": 21,
-        "employeeId": 1
-      }
-    ]
+    "id": 3,
+    "firstName": "кто-то",
+    "lastName": "кто-то",
+    "age": 21
   },
   {
     "id": 2,
-    "firstName": "sdf",
+    "firstName": "sdfsd",
     "lastName": "sdf",
-    "age": 32,
-    "services": [],
-    "products": []
+    "age": 21
+  },
+  {
+    "id": 1,
+    "firstName": "кто-то",
+    "lastName": "кто-то",
+    "age": 21
+  },
+  {
+    "id": 4,
+    "firstName": "wesf",
+    "lastName": "dsf",
+    "age": 15
   }
 ]

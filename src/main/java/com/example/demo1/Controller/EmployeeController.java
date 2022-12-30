@@ -1,27 +1,35 @@
 package com.example.demo1.Controller;
 
 
-import com.example.demo1.Model.Context;
 import com.example.demo1.Model.Employee;
-import com.example.demo1.Service.EmployeeService;
-import com.example.demo1.Service.Impl.EmployeeServiceImpl;
+import com.example.demo1.Model.ReferenceTableEmployeeProduct;
+import com.example.demo1.Model.ReferenceTableEmployeeService;
+import com.example.demo1.Repository.EmployeeRepository;
+import com.example.demo1.Repository.Impl.EmployeeRepositoryImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import lombok.Data;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 @Data
 public class EmployeeController {
 
-    private final EmployeeService employeeService = new EmployeeServiceImpl();
+    private final EmployeeRepository employeeService = new EmployeeRepositoryImpl();
+
+    @FXML
+    public Pane openFXPaneObjectProduct;
 
     @FXML
     private ToggleGroup find;
@@ -51,7 +59,7 @@ public class EmployeeController {
     private TextField idInput;
 
     @FXML
-    private TextField instructionInput;
+    private TextField ageInput;
 
     @FXML
     private TextField nameInput;
@@ -84,7 +92,7 @@ public class EmployeeController {
     private TableColumn<Employee, Integer> id;
 
     @FXML
-    private TableColumn<Employee, Integer> idInstruction;
+    private TableColumn<Employee, Integer> age;
 
     @FXML
     private TableColumn<Employee, String> lastName;
@@ -95,12 +103,20 @@ public class EmployeeController {
     @FXML
     private TableColumn<Employee, List> services;
 
+    @FXML
+    public TextField idServiceInput;
+
+    @FXML
+    public TextField idProductInput;
+
 
     public EmployeeController() {
     }
 
     @FXML
     void initialize() {
+
+        updateTable(employeeService.getAllEmployees());
 
         export.setOnAction(actionEvent -> {
             FileChooser fileChooser = new FileChooser();
@@ -116,7 +132,6 @@ public class EmployeeController {
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON", "*.json"));
             File file = fileChooser.showOpenDialog(btnOpen.getScene().getWindow());
             if (file != null) {
-                Context.filepath = file.getPath();
                 updateTable(employeeService.getAllEmployees());
             }
         });
@@ -139,10 +154,21 @@ public class EmployeeController {
         cancel.setOnAction(action -> {
             clearInput();
             addPanel.setStyle("visibility: hidden;");
+
         });
 
         btnAdd.setOnAction(actionEvent -> {
             addPanel.setStyle("visibility: visible");
+
+            openFXPaneObjectProduct.toFront();
+
+            try {
+                Node node = FXMLLoader.load(getClass().getResource("item2shorts.fxml"));
+                openFXPaneObjectProduct.getChildren().add(node);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             submit.setOnAction(action -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Create " + " ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
@@ -150,7 +176,7 @@ public class EmployeeController {
                 if (alert.getResult() == ButtonType.YES) {
                     add();
                     updateTable(employeeService.getAllEmployees());
-                    new Alert(Alert.AlertType.INFORMATION, "Запись добавлена").show();
+                    new Alert(Alert.AlertType.INFORMATION, "Created").show();
                 }
                 if (alert.getResult() == ButtonType.CANCEL) {
                     clearInput();
@@ -178,7 +204,7 @@ public class EmployeeController {
             if (!table.getItems().isEmpty()) {
                 if (nameRadio.isSelected()) updateTable(employeeService.nameSearch(newValue));
                 else if (surnameRadio.isSelected()) updateTable(employeeService.surnameSearch(newValue));
-                else if (instructionRadio.isSelected()) updateTable(employeeService.instructionSearch(newValue));
+                else if (instructionRadio.isSelected()) updateTable(employeeService.search(newValue));
             }
         });
     }
@@ -189,37 +215,39 @@ public class EmployeeController {
         employee.setId(Integer.valueOf(idInput.getText()));
         employee.setFirstName(nameInput.getText());
         employee.setLastName(surnameInput.getText());
-        employee.setAge(Integer.valueOf(instructionInput.getText()));
-        employee.setProducts(employeeService.getEmployeeById(id).getProducts());
-        employee.setServices(employeeService.getEmployeeById(id).getServices());
+        employee.setAge(Integer.valueOf(ageInput.getText()));
         employeeService.updateEmployeeById(id, employee);
     }
 
     private void add() {
         Employee employee = new Employee();
-        //int id = Integer.parseInt(idInput.getText());
         employee.setId(Integer.valueOf(idInput.getText()));
         employee.setFirstName(nameInput.getText());
         employee.setLastName(surnameInput.getText());
-        employee.setAge(Integer.valueOf(instructionInput.getText()));
-        employee.setProducts(new ArrayList<>());
-        employee.setServices(new ArrayList<>());
-        if (employee.getId() > 0) {
-            employeeService.createEmployee(employee);
-            updateTable(employeeService.getAllEmployees());
-        }
-        else
-            new Alert(Alert.AlertType.INFORMATION, "Invalid data").show();
+        employee.setAge(Integer.valueOf(ageInput.getText()));
+
+        ReferenceTableEmployeeProduct employeeProduct = new ReferenceTableEmployeeProduct();
+        ReferenceTableEmployeeService employeeService1 = new ReferenceTableEmployeeService();
+
+        employeeService1.setService_id(Integer.valueOf(idServiceInput.getText()));
+        employeeService1.setEmployee_id(employee.getId());
+
+        employeeProduct.setProduct_id(Integer.valueOf(idProductInput.getText()));
+        employeeProduct.setEmployee_id(employee.getId());
+
+        employeeService.saveEmployee(employee, employeeService1, employeeProduct);
+        updateTable(employeeService.getAllEmployees());
+        //new Alert(Alert.AlertType.INFORMATION, "Invalid data").show();
     }
 
     private void updateTable(List<Employee> list) {
         ObservableList<Employee> students = FXCollections.observableArrayList(list);
+
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         firstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        idInstruction.setCellValueFactory(new PropertyValueFactory<>("Age"));
-        products.setCellValueFactory(new PropertyValueFactory<>("products"));
-        services.setCellValueFactory(new PropertyValueFactory<>("services"));
+        age.setCellValueFactory(new PropertyValueFactory<>("Age"));
+
         table.setItems(students);
     }
 
@@ -231,13 +259,15 @@ public class EmployeeController {
         idInput.setText("");
         nameInput.setText("");
         surnameInput.setText("");
-        instructionInput.setText("");
+        ageInput.setText("");
+        idProductInput.setText("");
+        idServiceInput.setText("");
     }
 
     private void fillingInput() {
         idInput.setText(table.getSelectionModel().getSelectedItem().getId().toString());
         nameInput.setText(table.getSelectionModel().getSelectedItem().getFirstName());
         surnameInput.setText(table.getSelectionModel().getSelectedItem().getLastName());
-        instructionInput.setText(table.getSelectionModel().getSelectedItem().getAge().toString());
+        ageInput.setText(table.getSelectionModel().getSelectedItem().getAge().toString());
     }
 }

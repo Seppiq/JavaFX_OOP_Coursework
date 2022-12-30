@@ -1,5 +1,6 @@
 package com.example.demo1.Repository;
 
+import com.example.demo1.Model.ReferenceTableEmployeeService;
 import com.example.demo1.Model.Service;
 
 import java.io.File;
@@ -19,7 +20,7 @@ public interface ServiceRepo {
 
     void updateEmployeeById(int id, Service employee);
 
-    void saveEmployee(Service employee);
+    void saveEmployee(Service employee, ReferenceTableEmployeeService referenceTableEmployeeService);
 
     public void saveFile(File saveFile);
 

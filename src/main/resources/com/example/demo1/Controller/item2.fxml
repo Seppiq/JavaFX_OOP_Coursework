@@ -12,7 +12,6 @@
                 <TableColumn fx:id="name" prefWidth="127.99996185302734" text="name"/>
                 <TableColumn fx:id="description" prefWidth="128.7999725341797" text="description"/>
                 <TableColumn fx:id="quantity" prefWidth="123.20003662109377" text="quantity"/>
-                <TableColumn fx:id="employeeId" prefWidth="123.20003662109377" text="employeeId"/>
             </columns>
         </TableView>
         <!--                <AnchorPane fx:id="addPanel" layoutX="376.0" layoutY="308.0" prefHeight="239.0" prefWidth="178.0" style="-fx-background-color: white; visibility: hidden;">-->
@@ -71,7 +70,7 @@
                         <TextField fx:id="idInput" GridPane.columnIndex="1"/>
                         <TextField fx:id="nameInput" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                         <TextField fx:id="surnameInput" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                        <TextField fx:id="instructionInput" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                        <TextField fx:id="quantityInput" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
                         <TextField fx:id="employeeIdInput" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
                     </children>
                 </GridPane>

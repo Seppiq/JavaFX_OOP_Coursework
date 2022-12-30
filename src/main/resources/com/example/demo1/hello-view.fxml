@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0"
-            prefWidth="1050.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.demo1.Controller.HelloController">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1051.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.Controller.HelloController">
     <children>
-        <VBox alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;"
-              AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <ImageView fitHeight="73.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@d12bcf726d8683c17229522b730ea061.png"/>
+                        <Image url="@d12bcf726d8683c17229522b730ea061.png" />
                     </image>
                     <VBox.margin>
-                        <Insets bottom="10.0" top="50.0"/>
+                        <Insets bottom="10.0" top="50.0" />
                     </VBox.margin>
                 </ImageView>
                 <Label text="Kirill" textFill="#e7e5e5">
                     <VBox.margin>
-                        <Insets bottom="20.0"/>
+                        <Insets bottom="20.0" />
                     </VBox.margin>
                 </Label>
-                <Button fx:id="btnOverview" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false"
-                        prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Employees "
-                        textFill="#e7e5e5">
+                <Button fx:id="btnOverview" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Employees " textFill="#e7e5e5">
                     <graphic>
                         <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -37,17 +39,16 @@
                         </ImageView>
                     </graphic>
                     <opaqueInsets>
-                        <Insets/>
+                        <Insets />
                     </opaqueInsets>
                     <VBox.margin>
-                        <Insets/>
+                        <Insets />
                     </VBox.margin>
                     <padding>
-                        <Insets left="50.0"/>
+                        <Insets left="50.0" />
                     </padding>
                 </Button>
-                <Button fx:id="btnOrders" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false"
-                        prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Wares">
+                <Button fx:id="btnOrders" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Wares">
                     <graphic>
                         <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -56,11 +57,10 @@
                         </ImageView>
                     </graphic>
                     <padding>
-                        <Insets left="50.0"/>
+                        <Insets left="50.0" />
                     </padding>
                 </Button>
-                <Button fx:id="btnCustomers" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false"
-                        prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Services">
+                <Button fx:id="btnCustomers" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Services">
                     <graphic>
                         <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -69,7 +69,7 @@
                         </ImageView>
                     </graphic>
                     <padding>
-                        <Insets left="50.0"/>
+                        <Insets left="50.0" />
                     </padding>
                 </Button>
 
@@ -81,22 +81,19 @@
                     <children>
                         <Label layoutX="57.0" layoutY="25.0" text="Employees" textFill="#e7e5e5">
                             <font>
-                                <Font size="24.0"/>
+                                <Font size="24.0" />
                             </font>
                         </Label>
-                        <ScrollPane layoutX="24.0" layoutY="85.0" prefHeight="477.0" prefWidth="746.0"
-                                    stylesheets="@style.css">
+                        <ScrollPane layoutX="24.0" layoutY="85.0" prefHeight="477.0" prefWidth="746.0" stylesheets="@style.css">
                             <content>
-                                <VBox fx:id="pnEmployee" prefHeight="478.0" prefWidth="744.0" spacing="5.0"
-                                      style="-fx-background-color: #05071F;">
+                                <VBox fx:id="pnEmployee" prefHeight="478.0" prefWidth="744.0" spacing="5.0" style="-fx-background-color: #05071F;">
                                     <padding>
-                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </padding>
                                 </VBox>
                             </content>
                         </ScrollPane>
-                        <ImageView fitHeight="17.0" fitWidth="16.0" layoutX="749.0" layoutY="53.0" pickOnBounds="true"
-                                   preserveRatio="true">
+                        <ImageView fitHeight="17.0" fitWidth="16.0" layoutX="749.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <!--                               <Image url="@../images/icons8_Search_52px.png" />-->
                             </image>
@@ -107,49 +104,42 @@
                     <children>
                         <Label layoutX="57.0" layoutY="25.0" text="Services" textFill="#e7e5e5">
                             <font>
-                                <Font size="24.0"/>
+                                <Font size="24.0" />
                             </font>
                         </Label>
-                        <ScrollPane layoutX="24.0" layoutY="85.0" prefHeight="477.0" prefWidth="746.0"
-                                    stylesheets="@style.css">
+                        <ScrollPane layoutX="24.0" layoutY="85.0" prefHeight="477.0" prefWidth="746.0" stylesheets="@style.css">
                             <content>
-                                <VBox fx:id="pnProducts" prefHeight="478.0" prefWidth="744.0" spacing="5.0"
-                                      style="-fx-background-color: #05071F;">
+                                <VBox fx:id="pnProducts" prefHeight="478.0" prefWidth="744.0" spacing="5.0" style="-fx-background-color: #05071F;">
                                     <padding>
-                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </padding>
                                 </VBox>
                             </content>
                         </ScrollPane>
-                        <ImageView fitHeight="17.0" fitWidth="16.0" layoutX="749.0" layoutY="53.0" pickOnBounds="true"
-                                   preserveRatio="true">
+                        <ImageView fitHeight="17.0" fitWidth="16.0" layoutX="749.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <!--                               <Image url="@../images/icons8_Search_52px.png" />-->
                             </image>
                         </ImageView>
                     </children>
                 </Pane>
-                <Pane fx:id="pnlServices" prefHeight="574.0" prefWidth="794.0" style="-fx-background-color: #05071F;">
+                <Pane fx:id="pnlServices" prefHeight="576.0" prefWidth="790.0" style="-fx-background-color: #05071F;">
                     <children>
-                        <Label layoutX="57.0" layoutY="25.0" prefHeight="35.0" prefWidth="167.0" text="Products"
-                               textFill="#e7e5e5">
+                        <Label layoutX="57.0" layoutY="25.0" prefHeight="35.0" prefWidth="167.0" text="Products" textFill="#e7e5e5">
                             <font>
-                                <Font size="24.0"/>
+                                <Font size="24.0" />
                             </font>
                         </Label>
-                        <ScrollPane layoutX="24.0" layoutY="85.0" prefHeight="477.0" prefWidth="746.0"
-                                    stylesheets="@style.css">
+                        <ScrollPane layoutX="24.0" layoutY="85.0" prefHeight="477.0" prefWidth="746.0" stylesheets="@style.css">
                             <content>
-                                <VBox fx:id="pnServices" prefHeight="478.0" prefWidth="744.0" spacing="5.0"
-                                      style="-fx-background-color: #05071F;">
+                                <VBox fx:id="pnServices" prefHeight="478.0" prefWidth="744.0" spacing="5.0" style="-fx-background-color: #05071F;">
                                     <padding>
-                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </padding>
                                 </VBox>
                             </content>
                         </ScrollPane>
-                        <ImageView fitHeight="17.0" fitWidth="16.0" layoutX="749.0" layoutY="53.0" pickOnBounds="true"
-                                   preserveRatio="true">
+                        <ImageView fitHeight="17.0" fitWidth="16.0" layoutX="749.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <!--                               <Image url="@../images/icons8_Search_52px.png" />-->
                             </image>
@@ -158,8 +148,11 @@
                 </Pane>
             </children>
         </StackPane>
+        <Pane layoutX="1062.0" layoutY="14.0" prefHeight="540.0" prefWidth="275.0">
+            
+        </Pane>
     </children>
     <effect>
-        <DropShadow color="#1b1eeb"/>
+        <DropShadow color="#1b1eeb" />
     </effect>
 </AnchorPane>
