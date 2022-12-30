@@ -32,6 +32,9 @@ public class EmployeeController {
     public Pane openFXPaneObjectProduct;
 
     @FXML
+    public Pane openFXPaneObjectService;
+
+    @FXML
     private ToggleGroup find;
 
     @FXML
@@ -161,10 +164,13 @@ public class EmployeeController {
             addPanel.setStyle("visibility: visible");
 
             openFXPaneObjectProduct.toFront();
+            openFXPaneObjectService.toFront();
 
             try {
                 Node node = FXMLLoader.load(getClass().getResource("item2shorts.fxml"));
+                Node node2 = FXMLLoader.load(getClass().getResource("item3short.fxml"));
                 openFXPaneObjectProduct.getChildren().add(node);
+                openFXPaneObjectService.getChildren().add(node2);
 
             } catch (IOException e) {
                 e.printStackTrace();
